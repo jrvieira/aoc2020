@@ -7,7 +7,6 @@ main = do
    print $ solve' 2020 list
 
 solve :: Int -> [Int] -> Maybe Int
-solve _ [] = Nothing
 solve t ls = go ls
    where
    set = S.fromList ls
@@ -19,10 +18,10 @@ solve t ls = go ls
 -- part 2
 
 solve' :: Int -> [Int] -> Maybe Int
-solve' _ [] = Nothing
 solve' t ls = go ls
    where
    go [] = Nothing
    go (x:xs)
       | Just n <- solve (t - x) ls = Just (x * n)
       | otherwise = go xs
+
