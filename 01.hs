@@ -22,6 +22,7 @@ solve' :: Int -> [Int] -> Maybe Int
 solve' _ [] = Nothing
 solve' t ls = go ls
    where
+   go [] = Nothing
    go (x:xs)
       | Just n <- solve (t - x) ls = Just (x * n)
       | otherwise = go xs
