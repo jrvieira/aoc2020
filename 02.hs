@@ -5,7 +5,7 @@ import Data.Bool.Unicode
 main :: IO ()
 main = do
    list <- lines <$> readFile "02.txt"
-   print . length . filter id . map validate $ list
+   print . length . filter id . map validate  $ list
    print . length . filter id . map validate' $ list
 
 data Input = Input Int Int Char String

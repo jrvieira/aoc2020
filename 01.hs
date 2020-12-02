@@ -3,7 +3,7 @@ import qualified Data.Set as S
 main :: IO ()
 main = do
    list <- map read . lines <$> readFile "01.txt"
-   print $ solve 2020 list
+   print $ solve  2020 list
    print $ solve' 2020 list
 
 solve :: Int -> [Int] -> Maybe Int

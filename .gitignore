@@ -2,4 +2,6 @@
 !.gitignore
 !*.txt
 !*.hs
-!*/*.hs
+!/Zero
+/Zero/*
+!/Zero/*.hs
