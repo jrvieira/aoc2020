@@ -1,9 +1,10 @@
 module Zero.Zero where
 
-import Debug.Trace
 import Zero.Color
 import Zero.Draw
+import Debug.Trace
 
+-- trace
 infix 1 #
 (#) :: a -> String -> a
 (#) = flip trace
@@ -16,8 +17,8 @@ count x = length . filter (== x)
 delete :: Eq a => a -> [a] -> [a]
 delete _ [] = []
 delete a (x:xs)
-   | x == a = xs
-   | otherwise = x : xs
+   | x == a = delete a xs
+   | otherwise = x : delete a xs
 
 -- remove element from assoc by key 
 remove :: Eq k => k -> [(k,v)] -> [(k,v)]
@@ -51,6 +52,7 @@ plot f = draw f . go 0
    go _ [] = []
    go n (x:xs) = [((n,y),True) | y <- [0..x]] ++ go (succ n) xs
 
+-- test
 test :: Show a => String -> (a -> Bool) -> a -> IO ()
 test t p a = putStrLn $ unwords [t , clr c m , '\n' : clr c (show a) , "\n"]
    where
