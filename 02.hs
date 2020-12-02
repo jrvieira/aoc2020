@@ -21,6 +21,8 @@ validate s = uncurry (∧) . ((>= mn) &&& (<= mx)) . length . filter (== ch) $ p
    where
    Input mn mx ch pw = parse s
 
+-- part 2
+
 validate' :: String -> Bool
 validate' s = check i1 ⊻ check i2
    where
