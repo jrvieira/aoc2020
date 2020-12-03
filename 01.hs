@@ -12,7 +12,7 @@ solve t ls = go ls
    set = S.fromList ls
    go [] = Nothing
    go (x:xs)
-      | S.member (t - x) set = Just (x * t - x)
+      | S.member (t - x) set = Just $ x * (t - x)
       | otherwise = go xs
 
 -- part 2
