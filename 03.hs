@@ -7,9 +7,9 @@ main = do
    print . product $ map (($ input) . slope) [(1,1),(3,1),(5,1),(7,1),(1,2)]
 
 slope :: (Int,Int) -> String -> Int
-slope (r,d) = count '#' . takes . skips . lines
+slope (r,d) = count '#' . drops . skips . lines
    where
    skips [] = []
    skips xs = head xs : skips (drop d xs)
-   takes xs = head <$> zipWith drop [0,r..] (cycle <$> xs)
+   drops xs = head <$> zipWith drop [0,r..] (cycle <$> xs)
 
