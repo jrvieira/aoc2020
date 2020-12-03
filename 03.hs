@@ -4,7 +4,7 @@ main :: IO ()
 main = do
    input <- readFile "03.txt"
    print $ slope (3,1) input
-   print $ product $ map (($ input) . slope) [(1,1),(3,1),(5,1),(7,1),(1,2)]
+   print $ product $ ($ input) . slope <$> [(1,1),(3,1),(5,1),(7,1),(1,2)]
 
 slope :: (Int,Int) -> String -> Int
 slope (r,d) = count '#' . drops . skips . lines
