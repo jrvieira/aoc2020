@@ -11,3 +11,4 @@ slope (r,d) = count '#' . takes . skips . lines
    skips [] = []
    skips xs = head xs : skips (drop d xs)
    takes xs = head <$> zipWith drop [0,r..] (cycle <$> xs)
+
