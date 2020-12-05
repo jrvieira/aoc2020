@@ -1,5 +1,5 @@
 import Zero.Zero
-import Data.List
+import Util
 import Data.List.Split
 import Control.Arrow
 import Data.Maybe (fromMaybe)
@@ -8,8 +8,8 @@ import Text.Read (readMaybe)
 main :: IO ()
 main = do
    input <- map (splitOnAny " \n") . splitOn "\n\n" . init <$> readFile "04.txt"
-   print $ count True $ validate  . passport <$> input
-   print $ count True $ validate' . passport <$> input
+   print $ count id $ validate  . passport <$> input
+   print $ count id $ validate' . passport <$> input
 
 type Passport = [(String,String)]
 

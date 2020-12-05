@@ -1,4 +1,5 @@
 import Zero.Zero
+import Util
 
 main :: IO ()
 main = do
@@ -7,7 +8,7 @@ main = do
    print $ product $ ($ input) . slope <$> [(1,1),(3,1),(5,1),(7,1),(1,2)]
 
 slope :: (Int,Int) -> String -> Int
-slope (r,d) = count '#' . drops . skips . lines
+slope (r,d) = count (== '#') . drops . skips . lines
    where
    skips [] = []
    skips xs = head xs : skips (drop d xs)

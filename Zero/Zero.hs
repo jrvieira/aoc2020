@@ -9,10 +9,6 @@ infix 1 #
 (#) :: a -> String -> a
 (#) = flip trace
 
--- count the number of occurrences in a list
-count :: Eq a => a -> [a] -> Int
-count x = length . filter (== x)
-
 -- split list on any elements
 splitOnAny :: Eq a => [a] -> [a] -> [[a]]
 splitOnAny d = go [] . reverse
@@ -21,7 +17,6 @@ splitOnAny d = go [] . reverse
    go acc (c:cs)
       | elem c d = acc : go [] cs
       | otherwise = go (c : acc) cs
-
 
 -- delete element from list
 delete :: Eq a => a -> [a] -> [a]

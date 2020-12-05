@@ -1,4 +1,5 @@
 import Zero.Zero
+import Util
 import Data.List.Split
 import Control.Arrow
 import Data.Bool.Unicode
@@ -18,7 +19,7 @@ parse s = Input (read i1) (read i2) (head c) pw
    [i2,c,pw] = splitOn " " rest
 
 validate :: String -> Bool
-validate s = uncurry (∧) . ((>= mn) &&& (<= mx)) . count ch $ pw
+validate s = uncurry (∧) . ((>= mn) &&& (<= mx)) . count (== ch) $ pw
    where
    Input mn mx ch pw = parse s
 
