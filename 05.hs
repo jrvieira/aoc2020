@@ -29,7 +29,7 @@ bin = foldl' go 0
 
 -- part 2
 
-gaps :: (Ord a,Enum a,Show a) => [a] -> [a]
+gaps :: (Ord a,Enum a) => [a] -> [a]
 gaps = uncurry (go []) . (head &&& tail) . sort
    where
    go acc _ [] = acc
