@@ -25,7 +25,7 @@ passport :: [String] -> Passport
 passport = map (fmap tail . break (== ':'))
 
 validate' :: Passport -> Bool
-validate' = uncurry (&&) . (all valid &&& validate)
+validate' = uncurry (&&) . (validate &&& all valid)
    where
    valid (f,v)
       | "byr" <- f , Just n <- readMaybe v :: Maybe Int = n >= 1920 && n <= 2002
