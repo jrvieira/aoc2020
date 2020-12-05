@@ -1,18 +1,17 @@
 import Zero.Zero
-import Util
 import Data.List.Split
 import Control.Arrow
-import Data.Maybe (fromMaybe)
 import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
    input <- map (splitOnAny " \n") . splitOn "\n\n" . init <$> readFile "04.txt"
-   print $ count id $ validate  . passport <$> input
-   print $ count id $ validate' . passport <$> input
+   teqt "part 1" 222 $ count id $ validate  . passport <$> input
+   teqt "part 2" 140 $ count id $ validate' . passport <$> input
 
 type Passport = [(String,String)]
 
+fields :: [String]
 fields = ["byr","iyr","eyr","hgt","hcl","ecl","pid"]
 
 validate :: Passport -> Bool
@@ -23,24 +22,20 @@ validate p = and $ ($ fs) <$> (elem <$> fields)
 -- part 2
 
 passport :: [String] -> Passport
-passport = map (take 3 &&& drop 4)
+passport = map (fmap tail . break (== ':'))
 
 validate' :: Passport -> Bool
 validate' = uncurry (&&) . (all valid &&& validate)
    where
-   valid ("byr",v) = uncurry (&&) $ (>= 1920) &&& (<= 2002) $ fromMaybe 0 $ readMaybe v
-   valid ("iyr",v) = uncurry (&&) $ (>= 2010) &&& (<= 2020) $ fromMaybe 0 $ readMaybe v
-   valid ("eyr",v) = uncurry (&&) $ (>= 2020) &&& (<= 2030) $ fromMaybe 0 $ readMaybe v
-   valid ("hgt",v) = check $ fromMaybe 0 $ readMaybe $ takeWhile (`elem` ['0'..'9']) v
-      where
-      unit = dropWhile (`elem` ['0'..'9']) v
-      check h
-         | "cm" <- unit = uncurry (&&) $ ((>= 150) &&& (<= 193)) h
-         | "in" <- unit = uncurry (&&) $ ((>= 59) &&& (<= 76)) h
-         | otherwise = False
-   valid ("hcl",'#':hex) = uncurry (&&) $ ((== 6) . length &&& all (`elem` (['0'..'9'] ++ ['a'..'f']))) hex
-   valid ("ecl",v) = elem v ["amb","blu","brn","gry","grn","hzl","oth"]
-   valid ("pid",v) = uncurry (&&) $ ((== 9) . length &&& all (`elem` ['0'..'9'])) v
-   valid ("cid",_) = True
-   valid _ = False
+   valid (f,v)
+      | "byr" <- f , Just n <- readMaybe v :: Maybe Int = n >= 1920 && n <= 2002
+      | "iyr" <- f , Just n <- readMaybe v :: Maybe Int = n >= 2010 && n <= 2020
+      | "eyr" <- f , Just n <- readMaybe v :: Maybe Int = n >= 2020 && n <= 2030
+      | "hgt" <- f , (v,"cm") <- span (∈ ['0'..'9']) v, Just n <- readMaybe v :: Maybe Int = n >= 150 && n <= 193
+      | "hgt" <- f , (v,"in") <- span (∈ ['0'..'9']) v, Just n <- readMaybe v :: Maybe Int = n >= 59 && n <= 76
+      | "hcl" <- f , ('#':hx) <- v , Just n <- readMaybe ("0x" ++ hx) :: Maybe Int = length hx == 6
+      | "ecl" <- f = v ∈ ["amb","blu","brn","gry","grn","hzl","oth"]
+      | "pid" <- f , Just n <- readMaybe v :: Maybe Int = length v == 9
+      | "cid" <- f = True
+      | otherwise = False
 

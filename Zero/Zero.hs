@@ -9,13 +9,24 @@ infix 1 #
 (#) :: a -> String -> a
 (#) = flip trace
 
+-- count elements
+count :: (a -> Bool) -> [a] -> Int
+count p = length . filter p
+
+-- last n elements
+takeLast :: Int -> [a] -> [a]
+takeLast n l = go (drop n l) l
+   where
+   go [] r = r
+   go (_:xs) (_:ys) = go xs ys
+
 -- split list on any elements
 splitOnAny :: Eq a => [a] -> [a] -> [[a]]
 splitOnAny d = go [] . reverse
    where
    go acc [] = acc : []
    go acc (c:cs)
-      | elem c d = acc : go [] cs
+      | c ∈ d = acc : go [] cs
       | otherwise = go (c : acc) cs
 
 -- delete element from list
@@ -71,3 +82,13 @@ teqt t e a = putStrLn $ unwords [t , clr c m , r , '\n' : clr c (show a) , "\n"]
    (c,m,r)
       | a == e = (Green,"v","")
       | otherwise = (Red,"x",'\n' : show e)
+
+-- elem
+(∈) :: (Foldable t, Eq a) => a -> t a -> Bool
+(∈) = elem
+
+(∉) :: (Foldable t, Eq a) => a -> t a -> Bool
+(∉) = notElem
+
+(∋) :: (Foldable t, Eq a) => t a -> a -> Bool
+(∋) = flip elem
