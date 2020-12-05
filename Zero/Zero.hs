@@ -13,6 +13,16 @@ infix 1 #
 count :: Eq a => a -> [a] -> Int
 count x = length . filter (== x)
 
+-- split list on any elements
+splitOnAny :: Eq a => [a] -> [a] -> [[a]]
+splitOnAny d = go [] . reverse
+   where
+   go acc [] = acc : []
+   go acc (c:cs)
+      | elem c d = acc : go [] cs
+      | otherwise = go (c : acc) cs
+
+
 -- delete element from list
 delete :: Eq a => a -> [a] -> [a]
 delete _ [] = []

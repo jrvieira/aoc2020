@@ -1,26 +1,46 @@
 import Zero.Zero
 import Data.List
 import Data.List.Split
+import Control.Arrow
+import Data.Maybe (fromMaybe)
+import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
-   input <- map (map (take 4) . splitOnAny [" ","\n"]) . splitOn "\n\n" <$> readFile "04.txt"
-   print $ count True $ validate input
+   input <- map (splitOnAny " \n") . splitOn "\n\n" . init <$> readFile "04.txt"
+   print $ count True $ validate  . passport <$> input
+   print $ count True $ validate' . passport <$> input
 
-splitOnAny :: Eq a => [[a]] -> [a] -> [[a]]
-splitOnAny ds xs = foldl' (\ys d -> ys >>= splitOn d) [xs] ds
+type Passport = [(String,String)]
 
-fields = [
-   "byr:",
-   "iyr:",
-   "eyr:",
-   "hgt:",
-   "hcl:",
-   "ecl:",
-   "pid:"
-   ]
+fields = ["byr","iyr","eyr","hgt","hcl","ecl","pid"]
 
-validate :: [[String]] -> [Bool]
-validate = map valid
+validate :: Passport -> Bool
+validate p = and $ ($ fs) <$> (elem <$> fields)
    where
-   valid p = and $ ($ p) <$> (elem <$> fields)
+   fs = fst <$> p
+
+-- part 2
+
+passport :: [String] -> Passport
+passport = map (take 3 &&& drop 4)
+
+validate' :: Passport -> Bool
+validate' = uncurry (&&) . (all valid &&& validate)
+   where
+   valid ("byr",v) = uncurry (&&) $ (>= 1920) &&& (<= 2002) $ fromMaybe 0 $ readMaybe v
+   valid ("iyr",v) = uncurry (&&) $ (>= 2010) &&& (<= 2020) $ fromMaybe 0 $ readMaybe v
+   valid ("eyr",v) = uncurry (&&) $ (>= 2020) &&& (<= 2030) $ fromMaybe 0 $ readMaybe v
+   valid ("hgt",v) = check $ fromMaybe 0 $ readMaybe $ takeWhile (`elem` ['0'..'9']) v
+      where
+      unit = dropWhile (`elem` ['0'..'9']) v
+      check h
+         | "cm" <- unit = uncurry (&&) $ ((>= 150) &&& (<= 193)) h
+         | "in" <- unit = uncurry (&&) $ ((>= 59) &&& (<= 76)) h
+         | otherwise = False
+   valid ("hcl",'#':hex) = uncurry (&&) $ ((== 6) . length &&& all (`elem` (['0'..'9'] ++ ['a'..'f']))) hex
+   valid ("ecl",v) = elem v ["amb","blu","brn","gry","grn","hzl","oth"]
+   valid ("pid",v) = uncurry (&&) $ ((== 9) . length &&& all (`elem` ['0'..'9'])) v
+   valid ("cid",_) = True
+   valid _ = False
+
