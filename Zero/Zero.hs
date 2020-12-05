@@ -88,7 +88,7 @@ teqt t e a = putStrLn $ unwords [t , clr c m , r , '\n' : clr c (show a) , "\n"]
 (∈) = elem
 
 (∉) :: (Foldable t, Eq a) => a -> t a -> Bool
-(∉) = notElem
+(∉) e = not . elem e
 
 (∋) :: (Foldable t, Eq a) => t a -> a -> Bool
 (∋) = flip elem
