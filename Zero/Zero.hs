@@ -17,8 +17,8 @@ count p = length . filter p
 takeLast :: Int -> [a] -> [a]
 takeLast n l = go (drop n l) l
    where
-   go [] r = r
-   go (_:xs) (_:ys) = go xs ys
+   go [] rs = rs
+   go xs ys = go (tail xs) (tail ys)
 
 -- split list on any elements
 splitOnAny :: Eq a => [a] -> [a] -> [[a]]

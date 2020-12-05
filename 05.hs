@@ -1,17 +1,14 @@
-{-# LANGUAGE BinaryLiterals #-}
-
 import Zero.Zero
 import Data.Bifunctor
+import Data.List
 import Control.Monad
-import Data.Foldable
+import Control.Arrow
 
 main :: IO ()
 main = do
-   teqt "test 1" 567 $ seat $ pass "BFFFBBFRRR"
-   teqt "test 2" 119 $ seat $ pass "FFFBBBFRRR"
-   teqt "test 3" 820 $ seat $ pass "BBFFBBFRLL"
    input <- lines <$> readFile "05.txt"
    print $ maximum $ (seat . pass) <$> input
+   print $ gaps $ (seat . pass) <$> input
 
 type Pass = (Int,Int)
 
@@ -31,3 +28,12 @@ bin = foldl' go 0
       | otherwise = error "no bin parse"
 
 -- part 2
+
+gaps :: (Ord a,Enum a,Show a) => [a] -> [a]
+gaps = uncurry (go []) . (head &&& tail) . sort
+   where
+   go acc _ [] = acc
+   go acc e (x:xs)
+      | x == succ e = go acc x xs
+      | otherwise = go (succ e : acc) (succ e) (x:xs)
+
