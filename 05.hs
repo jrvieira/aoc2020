@@ -1,22 +1,12 @@
 import Zero.Zero
-import Data.Bifunctor
 import Data.List
-import Control.Monad
 import Control.Arrow
 
 main :: IO ()
 main = do
    input <- lines <$> readFile "05.txt"
-   print $ maximum $ (seat . pass) <$> input
-   print $ gaps $ (seat . pass) <$> input
-
-type Pass = (Int,Int)
-
-seat :: Pass -> Int
-seat (r,c) = 8 * r + c
-
-pass :: String -> Pass
-pass = join bimap bin . break (∈ "RL")
+   print $ maximum $ bin <$> input
+   print $ gaps $ bin <$> input
 
 bin :: String -> Int
 bin = foldl' go 0

@@ -33,7 +33,7 @@ validate' = uncurry (&&) . (validate &&& all valid)
       | "eyr" <- f , Just n <- readMaybe v :: Maybe Int = n >= 2020 && n <= 2030
       | "hgt" <- f , (v,"cm") <- span (∈ ['0'..'9']) v , Just n <- readMaybe v :: Maybe Int = n >= 150 && n <= 193
       | "hgt" <- f , (v,"in") <- span (∈ ['0'..'9']) v , Just n <- readMaybe v :: Maybe Int = n >= 59 && n <= 76
-      | "hcl" <- f , ('#':hx) <- v , Just n <- readMaybe ("0x" ++ hx) :: Maybe Int = length hx == 6
+      | "hcl" <- f , '#':hx <- v , Just n <- readMaybe ("0x" ++ hx) :: Maybe Int = length hx == 6
       | "ecl" <- f = v ∈ ["amb","blu","brn","gry","grn","hzl","oth"]
       | "pid" <- f , Just n <- readMaybe v :: Maybe Int = length v == 9
       | "cid" <- f = True
