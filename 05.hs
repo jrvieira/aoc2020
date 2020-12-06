@@ -5,13 +5,13 @@ import Control.Arrow
 main :: IO ()
 main = do
    input <- lines <$> readFile "05.txt"
-   print $ maximum $ bin <$> input
-   print $ gaps $ bin <$> input
+   print $ maximum $ seat <$> input
+   print $ gaps $ seat <$> input
 
-bin :: String -> Int
-bin = foldl' go 0
+seat :: String -> Int
+seat = foldl' bin 0
    where
-   go a d = 2 * a + b d
+   bin a d = 2 * a + b d
    b d
       | d ∈ "BR" = 1
       | d ∈ "FL" = 0
