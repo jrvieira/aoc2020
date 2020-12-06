@@ -3,6 +3,8 @@ module Zero.Zero where
 import Zero.Color
 import Zero.Draw
 import Debug.Trace
+import Data.List
+import Data.Set (Set)
 import qualified Data.Set as Set
 
 -- trace
@@ -32,13 +34,6 @@ splitOnAny d = go [] . reverse
    go acc (c:cs)
       | c ∈ d = acc : go [] cs
       | otherwise = go (c : acc) cs
-
--- delete element from list
-delete :: Eq a => a -> [a] -> [a]
-delete _ [] = []
-delete a (x:xs)
-   | x == a = delete a xs
-   | otherwise = x : delete a xs
 
 -- remove element from assoc by key 
 remove :: Eq k => k -> [(k,v)] -> [(k,v)]
@@ -87,7 +82,7 @@ teqt t e a = putStrLn $ unwords [t , clr c m , r , '\n' : clr c (show a) , "\n"]
       | a == e = (Green,"v","")
       | otherwise = (Red,"x",'\n' : show e)
 
--- elem
+-- set
 (∈) :: (Foldable t, Eq a) => a -> t a -> Bool
 (∈) = elem
 
@@ -96,3 +91,16 @@ teqt t e a = putStrLn $ unwords [t , clr c m , r , '\n' : clr c (show a) , "\n"]
 
 (∋) :: (Foldable t, Eq a) => t a -> a -> Bool
 (∋) = flip elem
+
+class Comparable s where
+   (∪) :: s -> s -> s
+   (∩) :: s -> s -> s
+
+instance Eq a => Comparable [a] where
+   (∪) = union
+   (∩) = intersect
+
+instance Ord a => Comparable (Set a) where
+   (∪) = Set.union
+   (∩) = Set.intersection
+
