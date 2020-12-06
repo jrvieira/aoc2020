@@ -3,6 +3,7 @@ module Zero.Zero where
 import Zero.Color
 import Zero.Draw
 import Debug.Trace
+import qualified Data.Set as Set
 
 -- trace
 infix 1 #
@@ -12,6 +13,9 @@ infix 1 #
 -- count elements
 count :: (a -> Bool) -> [a] -> Int
 count p = length . filter p
+
+unique :: Ord a => [a] -> [a]
+unique = Set.toList . Set.fromList
 
 -- last n elements
 takeLast :: Int -> [a] -> [a]
