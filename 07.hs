@@ -10,17 +10,15 @@ main :: IO ()
 main = do
    input <- map bag . lines <$> readFile "07.txt"
    print $ subtract 1 $ length $ filter (Color "shiny gold" ∈) $ forest input
-   -- test <- map bag . lines <$> readFile "07.test"
-   -- teqt "part 2" (Just 126) $ fmap leaves $ find ((Color "shiny gold" ==) . ε) $ forest test2
-   print $ fmap (subtract 1 . leaves) $ find ((Color "shiny gold" ==) . ε) $ forest input
+-- test <- map bag . lines <$> readFile "07.test"
+-- teqt "part 2" (Just 126) $ fmap total $ find ((Color "shiny gold" ==) . ε) $ forest test2
+   print $ fmap (subtract 1 . total) $ find ((Color "shiny gold" ==) . ε) $ forest input
 
 newtype Color = Color String
    deriving (Eq,Ord)
 
 type Contents = [(Int,Color)]
 type Bag = (Color,Contents)
-
--- tree of containers
 
 data Tree a = Node { ε :: a , ν :: Int , τ :: [Tree a] }
    deriving Foldable
@@ -46,7 +44,7 @@ bag s = (Color color,contents)
 
 -- part 2
 
-leaves :: Tree a -> Int
-leaves (Node _ m []) = m
-leaves (Node _ m ts) = m + m * sum (leaves <$> ts)
+total :: Tree a -> Int
+total (Node _ m []) = m
+total (Node _ m ts) = m + m * sum (total <$> ts)
 
