@@ -1,4 +1,4 @@
-import Zero.Zero
+import Util
 import Data.List.Split
 import Control.Arrow
 import Data.Bool.Unicode

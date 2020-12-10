@@ -1,6 +1,7 @@
 *
 !.gitignore
 !*.txt
+!*.test
 !*.hs
 !/Zero
 /Zero/*

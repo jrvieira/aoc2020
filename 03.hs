@@ -1,4 +1,4 @@
-import Zero.Zero
+import Util
 
 main :: IO ()
 main = do
