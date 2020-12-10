@@ -38,5 +38,5 @@ solve' t l = go [] $ reverse $ tails l
    go _ ([]:ls) = go [] ls
    go pre ((x:xs):ls)
       | length pre > 1 , sum pre == t = minimum pre + maximum pre
-      | otherwise = go (x : pre) (xs:ls)
+      | otherwise = go (x : pre) (xs : ls)
 
