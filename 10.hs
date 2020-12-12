@@ -40,6 +40,5 @@ edges :: [Int] -> [Int]
 edges [] = []
 edges a@(1:1:1:_) = 3 : edges (tail a)
 edges a@(1:1:_) = 2 : edges (tail a)
-edges a@(1:_) = 1 : edges (tail a)
 edges a = 1 : edges (tail a)
 
