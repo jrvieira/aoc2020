@@ -23,6 +23,12 @@ takeLast n l = go (drop n l) l
    go [] rs = rs
    go xs ys = go (tail xs) (tail ys)
 
+-- fixed point of iteration
+fixp :: Eq a => (a -> a) -> a -> a
+fixp f a
+   | a == f a = a
+   | otherwise = fixp f (f a)
+
 -- split list on any elements
 splitOnAny :: Eq a => [a] -> [a] -> [[a]]
 splitOnAny d = go [] . reverse
