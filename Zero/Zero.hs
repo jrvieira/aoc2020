@@ -66,14 +66,14 @@ plot f = draw f . go 0
 
 -- test
 test :: Show a => String -> (a -> Bool) -> a -> IO ()
-test t p a = putStrLn $ unwords [t , clr c m , '\n' : clr c (show a) , "\n"]
+test t p a = putStrLn $ unwords ['\n' : t , clr c m , '\n' : clr c (show a) , "\n"]
    where
    (c,m)
       | p a = (Green,"v")
       | otherwise = (Red,"x")
 
 teqt :: (Eq a,Show a) => String -> a -> a -> IO ()
-teqt t e a = putStrLn $ unwords [t , clr c m , r , '\n' : clr c (show a) , "\n"]
+teqt t e a = putStrLn $ unwords ['\n' : t , clr c m , r , '\n' : clr c (show a) , "\n"]
    where
    (c,m,r)
       | a == e = (Green,"v","")
