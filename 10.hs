@@ -21,7 +21,7 @@ deltas = δ . (0 :) . uncurry (flip (++)) . (pure . (+ 3) . last &&& id) . sort
    where
    δ [] = error "deltas []"
    δ [_] = []
-   δ (x:xx:xs) = abs (x - xx) : δ (xx : xs)
+   δ (x:xx:xs) = xx - x : δ (xx : xs)
 
 -- part 2
 
