@@ -29,9 +29,8 @@ run s@(Ship d p) ((di,n):xs)
    | otherwise = run s { δ = t (div n 90) } xs
    where
    t x = head . drop x . dropWhile (/= d) $ cycle wise
-      where
-      wise
-         | 'L' <- di = "NWSE"
-         | 'R' <- di = "WNES"
-         | otherwise = error "no parse"
+   wise
+      | 'L' <- di = "NWSE"
+      | 'R' <- di = "WNES"
+      | otherwise = error "no parse"
 
