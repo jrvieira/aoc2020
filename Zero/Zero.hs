@@ -12,7 +12,7 @@ import qualified Data.Set as Set
 -- trace
 infix 1 #
 (#) :: a -> String -> a
-(#) = flip trace
+(#) a s = trace (clr Bold $ clr Blue $ "# " ++ s) a
 
 -- remove duplicates
 unique :: Ord a => [a] -> [a]
@@ -83,7 +83,7 @@ test t p a = putStrLn $ unwords ['\n' : t , clr c m , '\n' : clr c (show a) , "\
       | otherwise = (Red,"x")
 
 teqt :: (Eq a,Show a) => String -> a -> a -> IO ()
-teqt t e a = putStrLn $ unwords ['\n' : t , clr c m , r , '\n' : clr c (show a) , "\n"]
+teqt t e a = putStrLn $ unwords ['\n' : t , clr c m , '\n' : clr c (show a) , r , "\n"]
    where
    (c,m,r)
       | a == e = (Green,"v","")

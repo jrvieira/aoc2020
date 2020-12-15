@@ -1,6 +1,6 @@
 module Zero.Color (Color (..),clr) where
 
-data Color = Reset | Default | Black | Red | Green | Yellow | Blue | Magenta | Cyan | White | Bold | Dim | Grey | Italic | Strike | Underline | Reverse
+data Color = Reset | Default | Black | Red | Green | Yellow | Blue | Magenta | Cyan | White | Bold | Dim | Grey | Italic | Strike | Underline | Reverse | Inverse
 
 code :: Color -> Int
 code Reset = 0
@@ -20,6 +20,7 @@ code Italic = 3
 code Strike = 9
 code Underline = 4
 code Reverse = 7
+code Inverse = 7
 
 instance Show Color where
     show c = "\x1b[" ++ (show . code) c ++ "m"
