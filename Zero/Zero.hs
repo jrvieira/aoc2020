@@ -6,6 +6,7 @@ import Zero.Color
 import Zero.Draw
 import Debug.Trace
 import Data.List
+import Data.Char
 import Data.Set (Set)
 import qualified Data.Set as Set
 
@@ -13,6 +14,16 @@ import qualified Data.Set as Set
 infix 1 #
 (#) :: a -> String -> a
 (#) a s = trace (clr Bold $ clr Blue $ "# " ++ s) a
+
+-- parse numbers from a string
+parseNums :: (Read a,Num a) => String -> [a]
+parseNums = go [] []
+   where
+   go nums acc "" = (read . reverse) <$> reverse (acc:nums)
+   go nums acc (c:cs)
+      | isDigit c = go nums (c:acc) cs
+      | null acc  = go nums acc cs
+      | otherwise = go (acc:nums) [] cs
 
 -- remove duplicates
 unique :: Ord a => [a] -> [a]

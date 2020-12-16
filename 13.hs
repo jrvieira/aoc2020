@@ -30,6 +30,6 @@ f = go 1 0
    where
    go _ τ [] = τ
    go step τ β@((b,δ):bs)
-      | rem (τ + δ) b == 0 = go (lcm step b) τ bs
+      | rem (τ + δ) b == 0 = go (lcm step b) τ bs  -- lcm can be (*) , all buses are prime
       | otherwise = go step (τ + step) β
 
