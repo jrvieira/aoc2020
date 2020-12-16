@@ -8,7 +8,7 @@ import Control.Arrow
 
 main :: IO ()
 main = do
-   input <- (map parse . lines) <$> readFile "14.txt"
+   input <- map parse . lines <$> readFile "14.txt"
    tests <- map (map parse . lines) . splitOn "\n\n" <$> readFile "14.test"
    teqt "part 1" 165 $ solve (head tests)
    print $ solve  input
