@@ -1,6 +1,6 @@
 import Zero.Zero
 import Data.List.Split
-import qualified Data.Vector.Unboxed as V
+import qualified Data.IntMap.Strict as M
 import Control.Arrow
 
 main :: IO ()
@@ -12,11 +12,13 @@ main = do
    print $ solve 30000000 input
 
 solve :: Int -> [Int] -> Int
-solve n = uncurry go . (V.fromList . reverse &&& length)
+solve n = uncurry go . (M.fromList &&& last) . flip zip [1..]
    where
-   go v i
-      | i == n = V.head v
-      | otherwise = go (V.cons x' v) (succ i)
+   go m (x,i)
+      | i == n = x
+      | otherwise = go m' (x',i')
       where
-      x' = maybe 0 succ $ V.elemIndex (V.head v) (V.tail v)
+      m' = M.insert x i m
+      x' = maybe 0 (i -) $ M.lookup x m
+      i' = succ i
 
