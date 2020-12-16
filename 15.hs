@@ -9,7 +9,7 @@ main = do
 -- tests <- map (map read . splitOn ",") . lines <$> readFile "15.test"
 -- teqt "part 1" [436,1,10,27,78,438,1836] $ solve 2020 <$> tests
    print $ solve  2020 input
-   print $ solve' 30000000 input
+   print $ solve 30000000 input
 
 solve :: Int -> [Int] -> Int
 solve n = uncurry go . (M.fromList &&& last) . flip zip [1..]
