@@ -1,7 +1,6 @@
 -- import Zero.Zero
 import Data.List.Split
 import qualified Data.IntMap.Strict as M
-import qualified Data.HashTable.IO as H
 import Control.Arrow
 
 main :: IO ()
@@ -22,14 +21,4 @@ solve n = uncurry go . (M.fromList &&& last) . flip zip [1..]
       m' = M.insert x i m
       x' = maybe 0 (i -) $ M.lookup x m
       i' = succ i
-
--- part 2
-
-solve' :: Int -> [Int] -> Int
-solve n = uncurry go . (H.fromList &&& last) . flip zip [1..]
-   where
-   go h (x,i) = do
-      ht <- x
-      H.insert ht 1 1
-      pure ht
 
