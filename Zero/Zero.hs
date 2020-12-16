@@ -3,7 +3,7 @@
 module Zero.Zero where
 
 import Zero.Color
-import Zero.Draw
+-- import Zero.Draw
 import Debug.Trace
 import Data.List
 import Data.Char
@@ -79,11 +79,11 @@ floyd (a:as) = go 1 1 a as
       | otherwise  = go pow (1+lam) x ys
 
 -- simple plot from list of ints
-plot :: String -> [Int] -> IO ()
-plot f = draw f . go 0 
-   where
-   go _ [] = []
-   go n (x:xs) = [((n,y),True) | y <- [0..x]] ++ go (succ n) xs
+-- plot :: String -> [Int] -> IO ()
+-- plot f = draw f . go 0 
+--    where
+--    go _ [] = []
+--    go n (x:xs) = [((n,y),True) | y <- [0..x]] ++ go (succ n) xs
 
 -- test
 test :: Show a => String -> (a -> Bool) -> a -> IO ()
