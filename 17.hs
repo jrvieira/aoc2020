@@ -1,8 +1,10 @@
 import Zero.Zero
 import Linear.V3
 import Linear.V4
+import Data.Foldable
 import Data.Set (Set)
 import qualified Data.Set as S
+import qualified Data.Map.Strict as M
 
 main :: IO ()
 main = do
@@ -30,12 +32,12 @@ solve = S.size . (!! 6) . sim
 sim :: (Applicative f, Num a, Enum a, Num (f a), Ord (f a), Traversable f) => Set (f a) -> [Set (f a)]
 sim = iterate step
 
-step s = S.filter alive s'
+step s = survive ∪ born
    where
-   s' = foldl1 (∪) (S.map adjacents s) ∪ s
-   alive x
-      | x ∈ s = S.size (S.filter (∈ s) (adjacents x)) ∈ [2,3] -- S23
-      | otherwise = S.size (S.filter (∈ s) (adjacents x)) ∈ [3] -- B3
+   survive = M.keysSet $ M.filter (∈ [2,3]) $ M.restrictKeys s' s
+   born = M.keysSet $ M.filter (== 3) $ M.withoutKeys s' s
+   s' = foldl' go M.empty s
+   go m p = foldr' (M.alter $ Just . maybe 1 (+1)) m $ adjacents p
 
 adjacents v = S.fromList [ v + δ | δ <- sequence $ pure [-1..1] , δ /= pure 0 ]
 
