@@ -19,6 +19,7 @@ infix 1 #
 parseNums :: (Read a,Num a) => String -> [a]
 parseNums = go [] []
    where
+   go nums [] "" = (read . reverse) <$> reverse nums
    go nums acc "" = (read . reverse) <$> reverse (acc:nums)
    go nums acc (c:cs)
       | isDigit c = go nums (c:acc) cs
