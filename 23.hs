@@ -37,10 +37,10 @@ move cs = bef <> [dest] <> pick <> aft <> [cur] -- # (intersperse ' ' $ intToDig
 {- OPTIMIZATION
 
    C - - - * * * * * *
-           * * d - - - * * * C
+         C * * d - - - * * * C
 
            C - - - * * * * * *
-                   * * * d - - - * * C
+                 C * * * d - - - * * C
 
    C ->    *
 
@@ -62,11 +62,11 @@ move' m = M.insert cur bef $ M.insert pick_end aft $ M.insert dest pick_start $ 
    pick_middle = m ! pick_start
    pick_end = m ! pick_middle
    bef = m ! pick_end
-   aft = m ! dest
-   dest = m ! go (pred cur)
+   dest = go (pred cur)
       where
       go x
          | x < 1 = go 1000000
          | x ∈ [pick_start,pick_middle,pick_end] = go (pred x)
          | otherwise = x
+   aft = m ! dest
 
