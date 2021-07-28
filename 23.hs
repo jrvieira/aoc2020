@@ -1,7 +1,9 @@
 import Zero.Zero
+import Data.Function
 import Data.Char
 import Data.List
 import Data.List.Split
+import Data.IntMap.Strict as M
 import Control.Arrow
 
 test :: IO ()
@@ -18,7 +20,7 @@ main = do
    print $ cups' input
 
 cups :: Int -> String -> String
-cups n = map intToDigit . snip . (!! n) . iterate move . map digitToInt
+cups n = fmap intToDigit . snip . (!! n) . iterate move . fmap digitToInt
    where
    snip ls = take (pred $ length ls) $ tail $ dropWhile (/= 1) $ cycle ls
 
@@ -32,6 +34,39 @@ move cs = bef <> [dest] <> pick <> aft <> [cur] -- # (intersperse ' ' $ intToDig
 
 -- part 2
 
+{- OPTIMIZATION
+
+   C - - - * * * * * *
+           * * d - - - * * * C
+
+           C - - - * * * * * *
+                   * * * d - - - * * C
+
+   C ->    *
+
+     _ <- (C-1)
+
+
+-}
+
 cups' :: String -> Integer
-cups' = product . map toInteger . take 2 . (!! 10000000) . iterate move . (<> [10..1000000]) . map digitToInt
+cups' s = uncurry (on (*) toInteger) $ ((! 1) &&& uncurry (!) . (id &&& (! 1))) $ (!! 10000000) $ iterate move' $ M.fromList $ ((0,head cs) :) $ uncurry zip $ (id &&& tail . cycle) cs
+   where
+   cs = fmap digitToInt s <> [10..1000000]
+
+move' :: M.IntMap Int -> M.IntMap Int
+move' m = M.insert cur bef $ M.insert pick_end aft $ M.insert dest pick_start $ M.insert 0 bef $ m
+   where
+   cur = m ! 0
+   pick_start = m ! cur
+   pick_middle = m ! pick_start
+   pick_end = m ! pick_middle
+   bef = m ! pick_end
+   aft = m ! dest
+   dest = m ! go (pred cur)
+      where
+      go x
+         | x < 1 = go 1000000
+         | x ∈ [pick_start,pick_middle,pick_end] = go (pred x)
+         | otherwise = x
 
